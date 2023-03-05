@@ -2,6 +2,7 @@ import type { AWS } from '@serverless/typescript';
 
 import getProductsList  from '@functions/products';
 import getProductsById  from '@functions/product';
+import createProduct  from '@functions/createProduct';
 
 const serverlessConfiguration: AWS = {
   service: 'aws-serverless-backend',
@@ -19,9 +20,14 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
+    iam: {
+      role: {
+        managedPolicies: ['arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess']
+      }
+    }
   },
   // import the function via paths
-  functions: { getProductsList, getProductsById },
+  functions: { getProductsList, getProductsById, createProduct },
   package: { individually: true },
   custom: {
     esbuild: {
