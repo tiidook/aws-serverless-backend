@@ -1,17 +1,25 @@
 {
-  "name": "aws-serverless-backend",
+  "name": "import-service",
   "version": "1.0.0",
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
+    "cloudformation:deploy": "serverless deploy",
+    "serverless:remove": "serverless remove",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
     "node": ">=14.15.0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.289.0",
     "@middy/core": "^3.4.0",
-    "@middy/http-json-body-parser": "^3.4.0"
+    "@middy/http-json-body-parser": "^3.4.0",
+    "@middy/s3-object-response": "^4.2.6",
+    "aws-lambda": "^1.0.7",
+    "aws-sdk": "^2.1333.0",
+    "csv-parser": "^3.0.0",
+    "serverless-plugin-typescript": "^2.1.4"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
