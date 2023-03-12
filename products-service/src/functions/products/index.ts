@@ -1,4 +1,4 @@
-import { handlerPath } from '@libs/handler-resolver';
+import { handlerPath } from '../../libs/handler-resolver';
 import {config} from "../../../config";
 
 export default {

@@ -93,31 +93,3 @@ The project code base is mainly located within the `src` folder. This folder is 
 ### Advanced usage
 
 Any tsconfig.json can be used, but if you do, set the environment variable `TS_NODE_CONFIG` for building the application, eg `TS_NODE_CONFIG=./tsconfig.app.json npx serverless webpack`
-
-### Integrated 2 lambda functions: `getProductsList` and `getProductsById`
-### Api Gateway `https://rd0rvs6891.execute-api.us-east-1.amazonaws.com/dev`
-
-
-#### product-list url: `https://rd0rvs6891.execute-api.us-east-1.amazonaws.com/dev/products`
-#### product url: `https://rd0rvs6891.execute-api.us-east-1.amazonaws.com/dev/products/{productId}`
-
-#### Product scheme:
-`Product {
-    id,
-    description,
-    price,
-    title
-}`
-
-#### Product list response scheme
-`{
-    "products": [Product]
-}`
-
-#### Particular product response scheme
-`{
-    "product": Product
-}
-`
-
-

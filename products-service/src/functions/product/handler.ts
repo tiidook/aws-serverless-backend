@@ -1,5 +1,5 @@
-import {formatJSONResponse, formatJSONResponseNotFound} from '@libs/api-gateway';
-import { middyfy } from '@libs/lambda';
+import {formatJSONResponse, formatJSONResponseNotFound} from '../../libs/api-gateway';
+import { middyfy } from '../../libs/lambda';
 import { DynamoDB } from "aws-sdk";
 const dynamo = new DynamoDB.DocumentClient({region: 'us-east-1'})
 

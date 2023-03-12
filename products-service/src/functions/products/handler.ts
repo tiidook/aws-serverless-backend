@@ -1,6 +1,6 @@
 import {DynamoDB} from 'aws-sdk'
-import {formatJSONResponse} from '@libs/api-gateway';
-import {middyfy} from '@libs/lambda';
+import {formatJSONResponse} from '../../libs/api-gateway';
+import {middyfy} from '../../libs/lambda';
 
 const dynamo = new DynamoDB.DocumentClient({region: 'us-east-1'})
 
