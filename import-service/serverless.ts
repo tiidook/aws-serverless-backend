@@ -18,15 +18,20 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
-    iamRoleStatements: [
-      {
-        Effect: "Allow",
-        Action: ["s3:*"],
-        Resource: [
-          `arn:aws:s3:::aws-csv-bucket`,
-        ],
+    iam: {
+      role: {
+        managedPolicies: ['arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess','arn:aws:iam::aws:policy/AmazonSQSFullAccess'],
+        statements:  [
+          {
+            Effect: "Allow",
+            Action: ["s3:*"],
+            Resource: [
+              'arn:aws:s3:::aws-csv-bucket',
+            ],
+          }
+        ]
       },
-    ]
+    },
   },
   functions: { importProductsFile, importFile },
   package: { individually: true },

@@ -1,5 +1,5 @@
 import type { AWS } from '@serverless/typescript';
-import {createProduct, getProductsById, getProductsList} from "./src/functions";
+import { createProduct, getProductsById, getProductsList, catalogBatchProcess } from "./src/functions";
 
 const serverlessConfiguration: AWS = {
   service: 'aws-serverless-backend',
@@ -19,12 +19,33 @@ const serverlessConfiguration: AWS = {
     },
     iam: {
       role: {
-        managedPolicies: ['arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess']
+        managedPolicies: ['arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'],
+        statements: [{ Effect: 'Allow', Action: 'sqs:*', Resource: {'Fn::GetAtt': ['SQSCatalogItems', 'Arn']}}]
       }
     }
   },
+  resources: {
+    Resources: {
+      SQSCatalogItems: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'catalogItemsQueue'
+        }
+      },
+      // SQSCatalogItemsSSMParameter: {
+      //   Type: 'AWS::SSM::Parameter',
+      //   Properties: {
+      //     Name: '/parameter/sqs-catalog-items-sqs/queue-arn',
+      //     Type: 'String',
+      //     Value: {
+      //       'Fn::GetAtt': ['SQSCatalogItems', 'Arn']
+      //     }
+      //   }
+      // }
+    }
+  },
   // import the function via paths
-  functions: { getProductsList, getProductsById, createProduct },
+  functions: { getProductsList, getProductsById, createProduct, catalogBatchProcess },
   package: { individually: true },
   custom: {
     esbuild: {
