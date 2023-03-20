@@ -16,11 +16,17 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      SNS_ARN: {
+        Ref: 'SNSTopic'
+      }
     },
     iam: {
       role: {
         managedPolicies: ['arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'],
-        statements: [{ Effect: 'Allow', Action: 'sqs:*', Resource: {'Fn::GetAtt': ['SQSCatalogItems', 'Arn']}}]
+        statements: [
+            { Effect: 'Allow', Action: 'sqs:*', Resource: {'Fn::GetAtt': ['SQSCatalogItems', 'Arn']}},
+            { Effect: 'Allow', Action: 'sns:*', Resource: {Ref: 'SNSTopic'}},
+        ]
       }
     }
   },
@@ -32,16 +38,22 @@ const serverlessConfiguration: AWS = {
           QueueName: 'catalogItemsQueue'
         }
       },
-      // SQSCatalogItemsSSMParameter: {
-      //   Type: 'AWS::SSM::Parameter',
-      //   Properties: {
-      //     Name: '/parameter/sqs-catalog-items-sqs/queue-arn',
-      //     Type: 'String',
-      //     Value: {
-      //       'Fn::GetAtt': ['SQSCatalogItems', 'Arn']
-      //     }
-      //   }
-      // }
+      SNSTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'createProductTopic'
+        }
+      },
+      SNSTopicSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'tiidook@gmail.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic',
+          }
+        }
+      }
     }
   },
   // import the function via paths
