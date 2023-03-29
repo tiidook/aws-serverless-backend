@@ -1,5 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 import { basicAuthorizer } from "@functions/index";
+import { config } from "./config";
 
 const serverlessConfiguration: AWS = {
   service: 'authorization-service',
@@ -13,7 +14,7 @@ const serverlessConfiguration: AWS = {
       shouldStartNameWithService: true,
     },
     environment: {
-      ADMIN: 'TEST_PASSWORD',
+      admin: config.admin,
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },

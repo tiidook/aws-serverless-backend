@@ -4,7 +4,7 @@ export {AppSyncAuthorizerEvent} from 'aws-lambda'
 
 export const basicAuthorizer = async (event: APIGatewayTokenAuthorizerEvent): Promise<APIGatewayAuthorizerResult> => {
   if (event.type !== 'TOKEN'){
-      return generatePolicy('test', event.methodArn, 'Deny', false)
+      return generatePolicy('user', event.methodArn, 'Deny', false)
   }
 
   try {

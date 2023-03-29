@@ -4,6 +4,8 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
+    "cloudformation:deploy": "serverless deploy",
+    "serverless:remove": "serverless remove",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -12,7 +14,8 @@
   "dependencies": {
     "@middy/core": "^3.4.0",
     "@middy/http-json-body-parser": "^3.4.0",
-    "aws-lambda": "^1.0.7"
+    "aws-lambda": "^1.0.7",
+    "dotenv": "^16.0.3"
   },
   "devDependencies": {
     "@serverless/typescript": "^3.0.0",
