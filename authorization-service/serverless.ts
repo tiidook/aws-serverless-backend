@@ -1,10 +1,9 @@
 import type { AWS } from '@serverless/typescript';
-
-import importProductsFile from "@functions/importProductsFile";
-import importFile from "@functions/importFile";
+import { basicAuthorizer } from "@functions/index";
+import { config } from "./config";
 
 const serverlessConfiguration: AWS = {
-  service: 'import-service',
+  service: 'authorization-service',
   frameworkVersion: '3',
   plugins: ['serverless-esbuild'],
   provider: {
@@ -15,25 +14,13 @@ const serverlessConfiguration: AWS = {
       shouldStartNameWithService: true,
     },
     environment: {
+      admin: config.admin,
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
     },
-    iam: {
-      role: {
-        managedPolicies: ['arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess','arn:aws:iam::aws:policy/AmazonSQSFullAccess'],
-        statements:  [
-          {
-            Effect: "Allow",
-            Action: ["s3:*"],
-            Resource: [
-              'arn:aws:s3:::aws-csv-bucket',
-            ],
-          }
-        ]
-      },
-    },
   },
-  functions: { importProductsFile, importFile },
+  // import the function via paths
+  functions: { basicAuthorizer },
   package: { individually: true },
   custom: {
     esbuild: {

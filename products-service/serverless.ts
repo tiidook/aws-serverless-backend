@@ -1,5 +1,5 @@
 import type { AWS } from '@serverless/typescript';
-import {createProduct, getProductsById, getProductsList} from "./src/functions";
+import { createProduct, getProductsById, getProductsList, catalogBatchProcess } from "./src/functions";
 
 const serverlessConfiguration: AWS = {
   service: 'aws-serverless-backend',
@@ -16,15 +16,48 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
+      SNS_ARN: {
+        Ref: 'SNSTopic'
+      }
     },
     iam: {
       role: {
-        managedPolicies: ['arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess']
+        managedPolicies: ['arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess'],
+        statements: [
+            { Effect: 'Allow', Action: 'sqs:*', Resource: {'Fn::GetAtt': ['SQSCatalogItems', 'Arn']}},
+            { Effect: 'Allow', Action: 'sns:*', Resource: {Ref: 'SNSTopic'}},
+        ]
+      }
+    }
+  },
+  resources: {
+    Resources: {
+      SQSCatalogItems: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'catalogItemsQueue'
+        }
+      },
+      SNSTopic: {
+        Type: 'AWS::SNS::Topic',
+        Properties: {
+          TopicName: 'createProductTopic'
+        }
+      },
+      SNSTopicSubscription: {
+        Type: 'AWS::SNS::Subscription',
+        Properties: {
+          Endpoint: 'tiidook@gmail.com',
+          Protocol: 'email',
+          TopicArn: {
+            Ref: 'SNSTopic',
+          }
+        }
       }
     }
   },
   // import the function via paths
-  functions: { getProductsList, getProductsById, createProduct },
+  functions: { getProductsList, getProductsById, createProduct, catalogBatchProcess },
   package: { individually: true },
   custom: {
     esbuild: {

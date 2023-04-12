@@ -1,4 +1,4 @@
-import {formatJSONResponse, formatJSONResponseBadRequest} from '../../libs/api-gateway';
+import { formatJSONResponse, formatJSONResponseBadRequest } from '../../libs/api-gateway';
 import { middyfy } from '../../libs/lambda';
 import { DynamoDB } from "aws-sdk";
 import { v4 as uuidv4 } from 'uuid';
